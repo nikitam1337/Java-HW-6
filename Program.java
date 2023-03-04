@@ -14,7 +14,12 @@ public class Program {
 
         System.out.println(new MapPrinter().mapToString(myMap.getMap()));
 
-
+        var finishPoint = new Point2D(8, 4);
+        var road = waveAlgorithm.getRoad(finishPoint, startPoint, myMap.getMap());
+        
+        for (Point2D coordinate : road) {
+            System.out.println(coordinate);
+        }
     }
 }
 
@@ -128,11 +133,40 @@ class WaveAlgorithm {
         }
     }
 
-    public ArrayList<Point2D> getRoad(Point2D exit) {
+    public ArrayList<Point2D> getRoad(Point2D exit, Point2D start, int[][] map) {
         ArrayList<Point2D> road = new ArrayList<>();
-        
-        
-        
+        if (map[exit.x][exit.y] != 0 && map[exit.x][exit.y]!=-1) {
+            Point2D current_position = exit;
+            road.add(new Point2D(current_position.x, current_position.y));
+
+            System.out.println("There is definitely a path");
+
+            while (map[current_position.x][current_position.y] != map[start.x][start.y]) {
+
+                if (map[current_position.x - 1][current_position.y] == map[current_position.x][current_position.y] - 1) {
+                    current_position.x = current_position.x - 1;
+                    road.add(new Point2D(current_position.x, current_position.y));
+                }
+
+                else if (map[current_position.x][current_position.y - 1] == map[current_position.x][current_position.y] - 1) {
+                    current_position.y = current_position.y - 1;
+                    road.add(new Point2D(current_position.x, current_position.y));
+                }
+
+                else if (map[current_position.x + 1][current_position.y] == map[current_position.x][current_position.y] - 1) {
+                    current_position.x = current_position.x + 1;
+                    road.add(new Point2D(current_position.x, current_position.y));
+                }
+
+                else if (map[current_position.x][current_position.y + 1] == map[current_position.x][current_position.y] - 1) {
+                    current_position.y = current_position.y + 1;
+                    road.add(new Point2D(current_position.x, current_position.y));
+                }
+            }
+
+        } else {
+            System.out.println("Path not found");
+        }
         return road;
     }
 }
